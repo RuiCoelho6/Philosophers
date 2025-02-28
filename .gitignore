@@ -1,5 +1,4 @@
-minishell
-*.a
+philo
 *.o
 /Objs
 .nfs*
