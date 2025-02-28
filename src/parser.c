@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:21:05 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/28 15:23:12 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:53:45 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ long	ft_atol(char *str)
 		str++;
 	}
 	if (!is_digit(*str))
-		exit_error("Only numbers are allowed");
+		exit_error("Only numbers are allowed\n");
 	if (sign == -1)
-		exit_error("Negative number are not allowed");
+		exit_error("Negative number are not allowed\n");
 	while (is_digit(*str))
 	{
 		result = result * 10 + (*str - '0');
 		if (result > INT_MAX)
-			exit_error("Number bigger than INT_MAX");
+			exit_error("Number bigger than INT_MAX\n");
 		str++;
 	}
-	return (result);
+	return (result * sign);
 }
 
 void	check_and_parse(t_table *table, char **av)
@@ -69,7 +69,7 @@ void	check_and_parse(t_table *table, char **av)
 	if (table->time_to_die < 60000
 		|| table->time_to_eat < 60000
 		|| table->time_to_sleep < 60000)
-		exit_error("Timestamps must be larger than 60ms");
+		exit_error("Timestamps must be larger than 60ms\n");
 	if (av[5])
 		table->limit_of_meals = ft_atol(av[5]);
 	else

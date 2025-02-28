@@ -6,7 +6,7 @@
 #    By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 13:55:48 by rpires-c          #+#    #+#              #
-#    Updated: 2025/02/28 14:36:24 by rpires-c         ###   ########.fr        #
+#    Updated: 2025/02/28 16:26:06 by rpires-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RM = rm -f
 MAKEFLAGS += -s
 
 # Source files
-SRCS = src/philo.c src/parser.c src/philo_utils.c
+SRCS = src/philo.c src/parser.c src/philo_utils.c src/thread_mutex_handlers.c
 
 # Object files
 OBJDIR = Objs

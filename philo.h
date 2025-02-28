@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/28 15:22:12 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:42:11 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,21 @@
 #include <unistd.h>
 #include <limits.h>
 #include <pthread.h>
+#include <errno.h>
+
+/*
+ *  Operations for mutex/threads
+*/
+typedef enum e_op
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH,
+}	t_op;
 
 typedef struct s_philo t_philo;
 typedef struct s_fork t_fork;
@@ -82,13 +97,50 @@ typedef struct s_philo
 	t_table		*table;
 }	t_philo;
 
-/* 
- *  exit_error : function to print an error message and exit the program
- *  This function does not return
- *  @param message : message to print
-*/
+/**
+ * exit_error : function to print an error message and exit the program
+ * 
+ * @message: message to print explaining the error
+ * 
+ * This function does not return
+ */
 void	exit_error(char *message);
 
+/**
+ * check_and_parse: This function extracts numerical values from the arguments
+ *                  and assigns them to the corresponding fields in the `t_table` structure.
+ * 
+ * @table: Pointer to the structure storing simulation parameters.
+ * @av: Array of arguments.
+ * 
+ * Converts time values from milliseconds to microseconds for use with `usleep()`.
+ * Ensures all provided timestamps are larger than the minimum required threshold (60ms).
+ * Sets the meal limit if provided, otherwise, defaults to -1 (unlimited meals).
+ */
 void	check_and_parse(t_table *table, char **av);
+
+/**
+ * mutex_handler: Manages mutex operations such as locking, unlocking,
+ *                initialization, and destruction.
+ * 
+ * @mtx: Pointer to the mutex being manipulated.
+ * @operation: The mutex operation to be performed (LOCK, UNLOCK, INIT, DESTROY).
+ * 
+ * Checks for errors using check_mutex_error().
+ */
+void	mutex_handler(t_mtx *mtx, t_op operation);
+
+/**
+ * thread_handler: Manages thread operations such as creation, joining, and detaching.
+ * 
+ * @thread: Pointer to the thread being managed.
+ * @foo: Function pointer to the thread's entry function.
+ * @data: Pointer to the data passed to the thread function.
+ * @operation: The thread operation to be performed (CREATE, JOIN, DETACH).
+ * 
+ * Checks for errors using check_thread_error().
+ */
+void	thread_handler(pthread_t *thread, void *(*foo)(void *),
+			void *data, t_op operation)
 
 #endif
