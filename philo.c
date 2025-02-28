@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:15:06 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/26 15:27:22 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:25:22 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
  */
 int	main(int ac, char **av)
 {
+	t_table table;
+
 	if (!(ac == 5 || ac == 6))
 		exit_error("Error: Input should be like\n"
-			"./philo 5 800 200 200 [5](optional)\n");
-	
+			"./philo 5 800 200 200 [5]\n");
+	check_and_parse(&table, av);
 	return (0);
 }

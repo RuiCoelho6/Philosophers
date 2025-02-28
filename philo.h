@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/26 15:31:53 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:34:32 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <pthread.h>
 
 typedef pthread_mutex_t t_mtx;
+typedef struct s_philo;
 
 /* 
  *  philo_nbr : number of philosophers
@@ -67,7 +68,7 @@ typedef struct s_fork
  *  left_fork : mutex associated with the left fork
  *  table : pointer control structure
  */
-typedef struct s_philo
+struct s_philo
 {
 	int			id;
 	pthread_t	thread_id;
@@ -85,5 +86,7 @@ typedef struct s_philo
  *  @param message : message to print
 */
 void	exit_error(char *message);
+
+void	check_and_parse(t_table **table, char **av);
 
 #endif
