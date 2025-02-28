@@ -1,0 +1,7 @@
+minishell
+*.a
+*.o
+/Objs
+.nfs*
+*.out
+.swp

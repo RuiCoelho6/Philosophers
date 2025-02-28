@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/28 12:34:32 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:22:12 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@
 #include <limits.h>
 #include <pthread.h>
 
+typedef struct s_philo t_philo;
+typedef struct s_fork t_fork;
+typedef struct s_table t_table;
 typedef pthread_mutex_t t_mtx;
-typedef struct s_philo;
 
 /* 
  *  philo_nbr : number of philosophers
@@ -68,11 +70,11 @@ typedef struct s_fork
  *  left_fork : mutex associated with the left fork
  *  table : pointer control structure
  */
-struct s_philo
+typedef struct s_philo
 {
 	int			id;
 	pthread_t	thread_id;
-	int			meal_counter;
+	long		meal_counter;
 	bool		is_full;
 	long		last_meal_timer;
 	t_fork		right_fork;
@@ -87,6 +89,6 @@ struct s_philo
 */
 void	exit_error(char *message);
 
-void	check_and_parse(t_table **table, char **av);
+void	check_and_parse(t_table *table, char **av);
 
 #endif

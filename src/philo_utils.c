@@ -6,11 +6,11 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:18:44 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/26 15:20:36 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:27:36 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 void	exit_error(char *message)
 {
