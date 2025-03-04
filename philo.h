@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/28 16:42:11 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:28:03 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ typedef struct s_philo
 	long		meal_counter;
 	bool		is_full;
 	long		last_meal_timer;
-	t_fork		right_fork;
-	t_fork		left_fork;
+	t_fork		*right_fork;
+	t_fork		*left_fork;
 	t_table		*table;
 }	t_philo;
 
@@ -141,6 +141,9 @@ void	mutex_handler(t_mtx *mtx, t_op operation);
  * Checks for errors using check_thread_error().
  */
 void	thread_handler(pthread_t *thread, void *(*foo)(void *),
-			void *data, t_op operation)
+			void *data, t_op operation);
+
+
+void	init_table(t_table *table);
 
 #endif
