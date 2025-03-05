@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/04 16:28:03 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:10:52 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_table
 	long	limit_of_meals;
 	long	start_sim;
 	bool	end_sim;
+	t_mtx	table_mtx;
 	t_philo	*philos;
 	t_fork	*forks;
 }	t_table;
@@ -143,7 +144,32 @@ void	mutex_handler(t_mtx *mtx, t_op operation);
 void	thread_handler(pthread_t *thread, void *(*foo)(void *),
 			void *data, t_op operation);
 
-
+/**
+ * init_table: Initializes the values of the table strutch and assigns the first forks each philosopher.
+ * 
+ * @table: Pointer to the main table struct.
+ */
 void	init_table(t_table *table);
+
+/**
+ * set_[type of data]_mtx: Locks a mutex, alters the value of the specified variable and unlocks the mutex.
+ * 
+ * @mtx: Pointer to the mtx to handle.
+ * @var: Variable to alter.
+ * @value: Value to atribute to the variable.
+ */
+void	set_bool_mtx(t_mtx *mtx, bool *var, bool value);
+void	set_int_mtx(t_mtx *mtx, int *var, int value);
+void	set_long_mtx(t_mtx *mtx, long *var, long value);
+
+/**
+ * get_[type of data]_mtx: Locks a mutex, retrieves the value of the specified variable and unlocks the mutex.
+ * 
+ * @mtx: Pointer to the mtx to handle.
+ * @var: Variable to retrieve.
+ */
+bool	get_bool_mtx(t_mtx *mtx, bool *var);
+int		get_int_mtx(t_mtx *mtx, int *var);
+long	get_long_mtx(t_mtx *mtx, long *var);
 
 #endif

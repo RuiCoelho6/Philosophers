@@ -1,19 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*   setters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 15:18:44 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 12:06:13 by rpires-c         ###   ########.fr       */
+/*   Created: 2025/03/05 12:05:48 by rpires-c          #+#    #+#             */
+/*   Updated: 2025/03/05 12:14:51 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	exit_error(char *message)
+void	set_bool_mtx(t_mtx *mtx, bool *var, bool value)
 {
-	printf("%s\n", message);
-	exit(1);
+	mutex_handler(mtx, LOCK);
+	*var = value;
+	mutex_handler(mtx, UNLOCK);
+}
+
+void	set_int_mtx(t_mtx *mtx, int *var, int value)
+{
+	mutex_handler(mtx, LOCK);
+	*var = value;
+	mutex_handler(mtx, UNLOCK);
+}
+
+void	set_long_mtx(t_mtx *mtx, long *var, long value)
+{
+	mutex_handler(mtx, LOCK);
+	*var = value;
+	mutex_handler(mtx, UNLOCK);
 }

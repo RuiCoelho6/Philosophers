@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+         #
+#    By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 13:55:48 by rpires-c          #+#    #+#              #
-#    Updated: 2025/02/28 16:26:06 by rpires-c         ###   ########.fr        #
+#    Updated: 2025/03/05 12:14:04 by rpires-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ RM = rm -f
 MAKEFLAGS += -s
 
 # Source files
-SRCS = src/philo.c src/parser.c src/philo_utils.c src/thread_mutex_handlers.c
+SRCS = src/philo.c src/parser.c src/initializer.c src/philo_utils.c \
+	src/thread_mutex_handlers.c src/setters.c src/getters.c
 
 # Object files
 OBJDIR = Objs

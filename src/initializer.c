@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:27:26 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/04 16:27:43 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:17:26 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../philo.h"
 
 void	init_fork_array(t_table *table)
 {
@@ -27,12 +27,12 @@ void	init_fork_array(t_table *table)
 /* 
  * Even/Odd fork assignments
  */
-void	get_forks(t_philo *philo, t_fork *forks, int position)
+void	start_getting_forks(t_philo *philo, t_fork *forks, int position)
 {
 	int	philo_nbr;
 
 	philo_nbr = philo->table->philo_nbr;
-	if (philo->id % 2)
+	if (philo->id % 2 == 0)
 	{
 		philo->left_fork = &forks[position];
 		philo->right_fork = &forks[(position + philo_nbr + 1) % philo_nbr];
@@ -63,7 +63,7 @@ void	init_philo_array(t_table *table)
 		philo->is_full = false;
 		philo->last_meal_timer = 0;
 		philo->table = table;
-		get_forks(philo, table->forks, i);
+		start_getting_forks(philo, table->forks, i);
 	}
 }
 
@@ -76,6 +76,7 @@ void	init_table(t_table *table)
 	table->forks = malloc(table->philo_nbr * sizeof(t_fork));
 	if (table->forks == NULL)
 		exit_error("Forks malloc failed\n");
+	mutex_handler(&table->table_mtx, INIT);
 	init_fork_array(table);
 	init_philo_array(table);
 }
