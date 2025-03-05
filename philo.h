@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 12:10:52 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:39:09 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ typedef enum e_op
 	DETACH,
 }	t_op;
 
+/*
+ *  Operations for get_time
+*/
+typedef enum e_time
+{
+	SECOND,
+	MILLISECOND,
+	MICROSECOND,
+}	t_time;
+
 typedef struct s_philo t_philo;
 typedef struct s_fork t_fork;
 typedef struct s_table t_table;
@@ -61,6 +71,7 @@ typedef struct s_table
 	long	limit_of_meals;
 	long	start_sim;
 	bool	end_sim;
+	bool	all_threads_ready;
 	t_mtx	table_mtx;
 	t_philo	*philos;
 	t_fork	*forks;
@@ -147,7 +158,7 @@ void	thread_handler(pthread_t *thread, void *(*foo)(void *),
 /**
  * init_table: Initializes the values of the table strutch and assigns the first forks each philosopher.
  * 
- * @table: Pointer to the main table struct.
+ * @table: Pointer to the structure storing simulation parameters.
  */
 void	init_table(t_table *table);
 
@@ -171,5 +182,26 @@ void	set_long_mtx(t_mtx *mtx, long *var, long value);
 bool	get_bool_mtx(t_mtx *mtx, bool *var);
 int		get_int_mtx(t_mtx *mtx, int *var);
 long	get_long_mtx(t_mtx *mtx, long *var);
+
+/**
+ * get_time: retuns elapsed time in seconds, milliseconds or microseconds.
+ * 
+ * @operation: The gettime operation to be performed (SECOND, MILLISECOND, MICROSECOND).
+ */
+long	get_time(t_time operation);
+
+/**
+ * my_usleep: Custom sleep function that prevents a thread from sleeping longer than necessary.
+ * 
+ * @usec: The duration to sleep in microseconds.
+ * @table: Pointer to the structure storing simulation parameters.
+ * 
+ * This function ensures a thread sleeps for the specified duration while:
+ * - Periodically checking if the simulation has ended to avoid unnecessary loops
+ * - Using usleep() for efficiency when the remaining sleep time is significant
+ * - Switching to active waiting when the remaining time is less than 1 microsecond
+ *   to maintain precision without oversleeping.
+ */
+void	my_usleep(long usec, t_table *table);
 
 #endif

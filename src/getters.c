@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:40:35 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 12:14:56 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:16:26 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,19 @@ long	get_long_mtx(t_mtx *mtx, long *var)
 	ret = *var;
 	mutex_handler(mtx, UNLOCK);
 	return (ret);
+}
+
+long	get_time(t_time operation)
+{
+	struct timeval	tv;
+	if(gettimeofday(&tv, NULL))
+		exit_error("gettimeofday failed");
+	if(operation == SECOND)
+		return(tv.tv_sec + (tv.tv_usec / 1e6));
+	else if(operation == MILLISECOND)
+		return((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	else if(operation == MICROSECOND)
+		return((tv.tv_sec * 1e6) + tv.tv_usec);
+	exit_error("Invalid operation for gettimeofday");
+	return (-1);
 }

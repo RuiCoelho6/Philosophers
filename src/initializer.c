@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:27:26 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 14:17:26 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:39:03 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	init_philo_array(t_table *table)
 void	init_table(t_table *table)
 {
 	table->end_sim = false;
+	table->all_threads_ready = false;
 	table->philos = malloc(table->philo_nbr * sizeof(t_philo));
 	if (table->philos == NULL)
 		exit_error("Philos malloc failed\n");
