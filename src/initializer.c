@@ -6,23 +6,11 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:27:26 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 18:39:03 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:04:46 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-void	init_fork_array(t_table *table)
-{
-	int	i;
-
-	i = -1;
-	while (++i < table->philo_nbr)
-	{
-		table->forks[i].fork_id = i;
-		mutex_handler(&table->forks[i].fork, INIT);
-	}
-}
 
 /* 
  * Even/Odd fork assignments
@@ -32,13 +20,13 @@ void	start_getting_forks(t_philo *philo, t_fork *forks, int position)
 	int	philo_nbr;
 
 	philo_nbr = philo->table->philo_nbr;
+	philo->first_fork = &forks[(position + 1) % philo_nbr];
+	philo->second_fork = &forks[position];
 	if (philo->id % 2 == 0)
 	{
-		philo->left_fork = &forks[position];
-		philo->right_fork = &forks[(position + philo_nbr + 1) % philo_nbr];
+		philo->first_fork = &forks[position];
+		philo->second_fork = &forks[(position + 1) % philo_nbr];
 	}
-	philo->right_fork = &forks[position];
-	philo->left_fork = &forks[(position + philo_nbr + 1) % philo_nbr];
 }
 
 /* 	int			id;
@@ -61,14 +49,18 @@ void	init_philo_array(t_table *table)
 		philo = table->philos + i;
 		philo->id = i + 1;
 		philo->is_full = false;
-		philo->last_meal_timer = 0;
+		philo->meal_counter = 0;
 		philo->table = table;
+		mutex_handler(&philo->philo_mtx, INIT);
 		start_getting_forks(philo, table->forks, i);
 	}
 }
 
 void	init_table(t_table *table)
 {
+	int	i;
+
+	i = -1;
 	table->end_sim = false;
 	table->all_threads_ready = false;
 	table->philos = malloc(table->philo_nbr * sizeof(t_philo));
@@ -77,7 +69,12 @@ void	init_table(t_table *table)
 	table->forks = malloc(table->philo_nbr * sizeof(t_fork));
 	if (table->forks == NULL)
 		exit_error("Forks malloc failed\n");
+	while(++i < table->philo_nbr)
+	{
+		mutex_handler(&table->forks[i].fork, INIT);
+		table->forks[i].fork_id = i;
+	}
 	mutex_handler(&table->table_mtx, INIT);
-	init_fork_array(table);
+	mutex_handler(&table->print_mtx, INIT);
 	init_philo_array(table);
 }

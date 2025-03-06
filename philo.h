@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 20:39:09 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:18:25 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <pthread.h>
 #include <errno.h>
 
+#define DEBUG_MODE 0
 /*
  *  Operations for mutex/threads
 */
@@ -44,6 +45,19 @@ typedef enum e_time
 	MILLISECOND,
 	MICROSECOND,
 }	t_time;
+
+/*
+ *  Operations for writing the status
+*/
+typedef enum e_status
+{
+	EATING,
+	THINKING,
+	SLEEPING,
+	TAKEN_FIRST_FORK,
+	TAKEN_SECOND_FORK,
+	DIED,
+}	t_status;
 
 typedef struct s_philo t_philo;
 typedef struct s_fork t_fork;
@@ -73,6 +87,7 @@ typedef struct s_table
 	bool	end_sim;
 	bool	all_threads_ready;
 	t_mtx	table_mtx;
+	t_mtx	print_mtx;
 	t_philo	*philos;
 	t_fork	*forks;
 }	t_table;
@@ -104,8 +119,9 @@ typedef struct s_philo
 	long		meal_counter;
 	bool		is_full;
 	long		last_meal_timer;
-	t_fork		*right_fork;
-	t_fork		*left_fork;
+	t_mtx		philo_mtx;
+	t_fork		*first_fork;
+	t_fork		*second_fork;
 	t_table		*table;
 }	t_philo;
 
@@ -199,9 +215,17 @@ long	get_time(t_time operation);
  * This function ensures a thread sleeps for the specified duration while:
  * - Periodically checking if the simulation has ended to avoid unnecessary loops
  * - Using usleep() for efficiency when the remaining sleep time is significant
- * - Switching to active waiting when the remaining time is less than 1 microsecond
- *   to maintain precision without oversleeping.
+ * - Switching to active waiting using a spinlock when the remaining time is less than
+ *   1 microsecond to maintain precision without oversleeping.
  */
 void	my_usleep(long usec, t_table *table);
+
+void	print_status(t_philo *philo, t_status op, bool debug);
+
+void	eat(t_philo *philo);
+
+void	think(t_philo *philo);
+
+void	start_simulation(t_table *table);
 
 #endif

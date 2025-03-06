@@ -6,26 +6,37 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:17:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 19:38:41 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:49:25 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	dinner_simulation(void *data)
+void	wait_all_threads(t_table *table)
+{
+	while(!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
+		;
+}
+
+void	*dinner_simulation(void *data)
 {
 	t_philo	*philo;
 	bool	end_sim;
 
-	end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	philo = (t_philo *)data;
+	end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	wait_all_threads(philo->table);
 	while (!end_sim)
 	{
 		if(philo->is_full)
 			break ;
+		eat(philo);
+		print_status(philo, SLEEPING, DEBUG_MODE);
+		my_usleep(philo->table->time_to_sleep, philo->table);
+		think(philo);
 		end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	}
+	return (NULL);
 }
 
 void	start_simulation(t_table *table)
@@ -48,5 +59,4 @@ void	start_simulation(t_table *table)
 	i = -1;
 	while(++i < table->philo_nbr)
 		thread_handler(&table->philos[i].thread_id, NULL, NULL, JOIN);
-	
 }

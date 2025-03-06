@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:40:35 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 19:16:26 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:43:26 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ long	get_long_mtx(t_mtx *mtx, long *var)
 long	get_time(t_time operation)
 {
 	struct timeval	tv;
+
 	if(gettimeofday(&tv, NULL))
 		exit_error("gettimeofday failed");
 	if(operation == SECOND)

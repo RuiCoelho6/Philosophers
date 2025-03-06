@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:21:05 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/28 15:53:45 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:30:29 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	check_and_parse(t_table *table, char **av)
  *  Convert time from miliseconds (given by the user)
  *  to microseconds to use in USLEEP function
 */
-	table->time_to_die = ft_atol(av[2]) * 100;
-	table->time_to_eat = ft_atol(av[3]) * 100;
-	table->time_to_sleep = ft_atol(av[4]) * 100;
+	table->time_to_die = ft_atol(av[2]) * 1000;
+	table->time_to_eat = ft_atol(av[3]) * 1000;
+	table->time_to_sleep = ft_atol(av[4]) * 1000;
 /*
  *  Check if timestamp is larger than the minimum allowed
 */
