@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:17:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/07 14:08:37 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:23:46 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,6 @@ void	start_simulation(t_table *table)
 	i = -1;
 	while(++i < table->philo_nbr)
 		thread_handler(&table->philos[i].thread_id, NULL, NULL, JOIN);
+	set_bool_mtx(&table->table_mtx, &table->end_sim, true);
+	thread_handler(&table->monitor, NULL, NULL, JOIN);
 }
