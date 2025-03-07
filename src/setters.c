@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:05:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/05 12:14:51 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/07 12:47:14 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,12 @@ void	set_long_mtx(t_mtx *mtx, long *var, long value)
 {
 	mutex_handler(mtx, LOCK);
 	*var = value;
+	mutex_handler(mtx, UNLOCK);
+}
+
+void	increase_long_mtx(t_mtx *mtx, long *value)
+{
+	mutex_handler(mtx, LOCK);
+	(*value)++;
 	mutex_handler(mtx, UNLOCK);
 }

@@ -6,7 +6,7 @@
 #    By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 13:55:48 by rpires-c          #+#    #+#              #
-#    Updated: 2025/03/06 11:24:17 by rpires-c         ###   ########.fr        #
+#    Updated: 2025/03/07 14:08:56 by rpires-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ MAKEFLAGS += -s
 # Source files
 SRCS = src/philo.c src/parser.c src/initializer.c src/philo_utils.c \
 	src/thread_mutex_handlers.c src/setters.c src/getters.c src/simulation.c \
-	src/sleep_eat_think.c
+	src/sleep_eat_think.c src/monitor.c
 # Object files
 OBJDIR = Objs
 OBJS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(SRCS))

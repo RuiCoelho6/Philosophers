@@ -6,16 +6,29 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:17:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/06 15:49:25 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:08:37 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	wait_all_threads(t_table *table)
+void	*lone_philo(void *data)
 {
-	while(!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
-		;
+	t_philo	*philo;
+	bool	end_sim;
+
+	philo = (t_philo *) data;
+	end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
+	wait_all_threads(philo->table);
+	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer, get_time(MILLISECOND));
+	increase_long_mtx(&philo->table->table_mtx, &philo->table->threads_running);
+	print_status(philo, TAKEN_FIRST_FORK, DEBUG_MODE);
+	while(!end_sim)
+	{
+		usleep(200);
+		end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
+	}
+	return (NULL);
 }
 
 void	*dinner_simulation(void *data)
@@ -26,6 +39,10 @@ void	*dinner_simulation(void *data)
 	philo = (t_philo *)data;
 	end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	wait_all_threads(philo->table);
+	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer,
+			get_time(MILLISECOND));
+	increase_long_mtx(&philo->table->table_mtx,
+		&philo->table->threads_running);
 	while (!end_sim)
 	{
 		if(philo->is_full)
@@ -47,13 +64,15 @@ void	start_simulation(t_table *table)
 	if (table->limit_of_meals == 0)
 		return ;
 	else if (table->philo_nbr == 1)
-		;
+		thread_handler(&table->philos[0].thread_id, lone_philo,
+			&table->philos[0], CREATE);
 	else
 	{
 		while(++i < table->philo_nbr)
 			thread_handler(&table->philos[i].thread_id,
 				dinner_simulation, &table->philos[i], CREATE);
 	}
+	thread_handler(&table->monitor, monitor_dinner, table, CREATE);
 	table->start_sim = get_time(MILLISECOND);
 	set_bool_mtx(&table->table_mtx, &table->all_threads_ready, true);
 	i = -1;

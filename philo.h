@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/06 16:18:25 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:06:57 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef enum e_op
 */
 typedef enum e_time
 {
-	SECOND,
 	MILLISECOND,
 	MICROSECOND,
 }	t_time;
@@ -86,6 +85,8 @@ typedef struct s_table
 	long	start_sim;
 	bool	end_sim;
 	bool	all_threads_ready;
+	long	threads_running;
+	pthread_t	monitor;
 	t_mtx	table_mtx;
 	t_mtx	print_mtx;
 	t_philo	*philos;
@@ -188,6 +189,7 @@ void	init_table(t_table *table);
 void	set_bool_mtx(t_mtx *mtx, bool *var, bool value);
 void	set_int_mtx(t_mtx *mtx, int *var, int value);
 void	set_long_mtx(t_mtx *mtx, long *var, long value);
+void	increase_long_mtx(t_mtx *mtx, long *value);
 
 /**
  * get_[type of data]_mtx: Locks a mutex, retrieves the value of the specified variable and unlocks the mutex.
@@ -219,6 +221,12 @@ long	get_time(t_time operation);
  *   1 microsecond to maintain precision without oversleeping.
  */
 void	my_usleep(long usec, t_table *table);
+
+void	*monitor_dinner(void *data);
+
+void	wait_all_threads(t_table *table);
+
+bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr);
 
 void	print_status(t_philo *philo, t_status op, bool debug);
 

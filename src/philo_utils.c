@@ -6,11 +6,29 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:18:44 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/06 16:17:20 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:14:06 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+void	wait_all_threads(t_table *table)
+{
+	while(!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
+		;
+}
+
+bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr)
+{
+	bool	ret;
+
+	ret = false;
+	mutex_handler(mtx, LOCK);
+	if(*threads == philo_nbr)
+		ret = true;
+	mutex_handler(mtx, UNLOCK);
+	return (ret);
+}
 
 void	write_debug(t_status status, t_philo *philo, long elapsed)
 {
@@ -53,13 +71,13 @@ void	print_status(t_philo *philo, t_status op, bool debug)
 			printf("%-6ld""%d has taken a fork\n", elapsed, philo->id);
 		else if(op == EATING
 			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d has is eating\n", elapsed, philo->id);
+			printf("%-6ld""%d is eating\n", elapsed, philo->id);
 		else if(op == SLEEPING
 			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d has is slppeing\n", elapsed, philo->id);
+			printf("%-6ld""%d is slppeing\n", elapsed, philo->id);
 		else if(op == THINKING
 			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d has is eating\n", elapsed, philo->id);
+			printf("%-6ld""%d is eating\n", elapsed, philo->id);
 		else if(op == DIED)
 			printf("%-6ld %d died\n", elapsed, philo->id);
 	}

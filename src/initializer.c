@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:27:26 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/06 16:04:46 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/07 12:41:58 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	init_table(t_table *table)
 	i = -1;
 	table->end_sim = false;
 	table->all_threads_ready = false;
+	table->threads_running = 0;
 	table->philos = malloc(table->philo_nbr * sizeof(t_philo));
 	if (table->philos == NULL)
 		exit_error("Philos malloc failed\n");
