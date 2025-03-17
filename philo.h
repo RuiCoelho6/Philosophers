@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/07 14:06:57 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:03:19 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ void	increase_long_mtx(t_mtx *mtx, long *value);
 bool	get_bool_mtx(t_mtx *mtx, bool *var);
 int		get_int_mtx(t_mtx *mtx, int *var);
 long	get_long_mtx(t_mtx *mtx, long *var);
+bool	end_sim(t_table *table);
 
 /**
  * get_time: retuns elapsed time in seconds, milliseconds or microseconds.
@@ -229,10 +230,6 @@ void	wait_all_threads(t_table *table);
 bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr);
 
 void	print_status(t_philo *philo, t_status op, bool debug);
-
-void	eat(t_philo *philo);
-
-void	think(t_philo *philo);
 
 void	start_simulation(t_table *table);
 

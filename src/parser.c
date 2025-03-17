@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:21:05 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/06 11:30:29 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:21:48 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ long	ft_atol(char *str)
 	long	result;
 	int		sign;
 
+	if (!str || *str == '\0')
+		exit_error("Input is empty");
 	result = 0;
 	sign = 1;
 	while (is_space(*str))
@@ -53,19 +55,19 @@ long	ft_atol(char *str)
 	return (result * sign);
 }
 
-void	check_and_parse(t_table *table, char **av)
-{
-	table->philo_nbr = ft_atol(av[1]);
 /*
  *  Convert time from miliseconds (given by the user)
  *  to microseconds to use in USLEEP function
+ * 
+ *  Check if timestamp is larger than the minimum allowed
 */
+void	check_and_parse(t_table *table, char **av)
+{
+	table->philo_nbr = ft_atol(av[1]);
+
 	table->time_to_die = ft_atol(av[2]) * 1000;
 	table->time_to_eat = ft_atol(av[3]) * 1000;
 	table->time_to_sleep = ft_atol(av[4]) * 1000;
-/*
- *  Check if timestamp is larger than the minimum allowed
-*/
 	if (table->time_to_die < 60000
 		|| table->time_to_eat < 60000
 		|| table->time_to_sleep < 60000)

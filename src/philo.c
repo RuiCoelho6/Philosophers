@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:15:06 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/07 14:33:06 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:18:03 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ void	clean(t_table *table)
  */
 int	main(int ac, char **av)
 {
-	t_table table;
+	t_table	table;
 
 	if (!(ac == 5 || ac == 6))
 		exit_error("Error: Input should be like\n"
 			"./philo 5 800 200 200 [5]\n");
-	check_and_parse(&table, av);
-	init_table(&table);
-	start_simulation(&table);
-	clean(&table);
+	else
+	{
+		check_and_parse(&table, av);
+		init_table(&table);
+		start_simulation(&table);
+		clean(&table);
+	}
 	return (0);
 }

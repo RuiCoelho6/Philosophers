@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:18:44 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/07 14:14:06 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:37:05 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,19 @@ bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr)
 
 void	write_debug(t_status status, t_philo *philo, long elapsed)
 {
-	if(status == TAKEN_FIRST_FORK
-		&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-		printf("%6ld""philo: %d has taken the first fork [%d]\n", elapsed, philo->id,
+	if(status == TAKEN_FIRST_FORK && !end_sim(philo->table))
+		printf("%6ld philo: %d has taken the first fork [%d]\n", elapsed, philo->id,
 			philo->first_fork->fork_id);
-	if(status == TAKEN_SECOND_FORK
-		&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-		printf("%6ld""philo: %d has taken the second fork [%d]\n", elapsed, philo->id,
+	if(status == TAKEN_SECOND_FORK && !end_sim(philo->table))
+		printf("%6ld philo: %d has taken the second fork [%d]\n", elapsed, philo->id,
 			philo->second_fork->fork_id);
-	else if(status == EATING
-		&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-		printf("%6ld""philo: %d is eating | meal counter: %ld\n", elapsed, philo->id,
+	else if(status == EATING && !end_sim(philo->table))
+		printf("%6ld philo: %d is eating | meal counter: %ld\n", elapsed, philo->id,
 			philo->meal_counter);
-	else if(status == SLEEPING
-		&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-		printf("%6ld""philo: %d is sleeping\n", elapsed, philo->id);
-	else if(status == THINKING
-		&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-		printf("%6ld""philo: %d is thinking\n", elapsed, philo->id);
+	else if(status == SLEEPING && !end_sim(philo->table))
+		printf("%6ld philo: %d is sleeping\n", elapsed, philo->id);
+	else if(status == THINKING && !end_sim(philo->table))
+		printf("%6ld philo: %d is thinking\n", elapsed, philo->id);
 	else if(status == DIED)
 		printf("%6ld philo: %d died\n", elapsed, philo->id);
 }
@@ -67,17 +62,14 @@ void	print_status(t_philo *philo, t_status op, bool debug)
 	else
 	{
 		if((op == TAKEN_FIRST_FORK || op == TAKEN_SECOND_FORK)
-			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d has taken a fork\n", elapsed, philo->id);
-		else if(op == EATING
-			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d is eating\n", elapsed, philo->id);
-		else if(op == SLEEPING
-			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d is slppeing\n", elapsed, philo->id);
-		else if(op == THINKING
-			&& !get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim))
-			printf("%-6ld""%d is eating\n", elapsed, philo->id);
+			&& !end_sim(philo->table))
+			printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
+		else if(op == EATING && !end_sim(philo->table))
+			printf("%-6ld %d is eating\n", elapsed, philo->id);
+		else if(op == SLEEPING && !end_sim(philo->table))
+			printf("%-6ld %d is sleeping\n", elapsed, philo->id);
+		else if(op == THINKING && !end_sim(philo->table))
+			printf("%-6ld %d is thinking\n", elapsed, philo->id);
 		else if(op == DIED)
 			printf("%-6ld %d died\n", elapsed, philo->id);
 	}

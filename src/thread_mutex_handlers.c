@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread_mutex_handlers.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:33 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/02/28 16:38:15 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:40:17 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	check_mutex_error(int status, t_op operation)
 {
+	if (status == 0)
+		return ;
 	if (status == EINVAL
 		&& (operation == LOCK || operation == UNLOCK))
 		exit_error("The value specified by mutex is invalid\n");
@@ -48,6 +50,8 @@ void	mutex_handler(t_mtx *mtx, t_op operation)
 
 void	check_thread_error(int status, t_op operation)
 {
+	if (status == 0)
+		return ;
 	if (status == EAGAIN)
 		exit_error("No resources to create another thread\n");
 	else if (status == EPERM)

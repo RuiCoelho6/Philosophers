@@ -3,47 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:17:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/07 14:23:46 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:02:52 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+static void	think(t_philo *philo)
+{
+	print_status(philo, THINKING, DEBUG_MODE);
+}
+
+static void	eat(t_philo *philo)
+{
+	mutex_handler(&philo->first_fork->fork, LOCK);
+	print_status(philo, TAKEN_FIRST_FORK, DEBUG_MODE);
+	mutex_handler(&philo->second_fork->fork, LOCK);
+	print_status(philo, TAKEN_SECOND_FORK, DEBUG_MODE);
+	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer, get_time(MILLISECOND));
+	philo->meal_counter++;
+	print_status(philo, EATING, DEBUG_MODE);
+	my_usleep(philo->table->time_to_eat, philo->table);
+	if(philo->table->limit_of_meals > 0
+		&& philo->meal_counter == philo->table->limit_of_meals)
+		set_bool_mtx(&philo->philo_mtx, &philo->is_full, true);
+	mutex_handler(&philo->first_fork->fork, UNLOCK);
+	mutex_handler(&philo->second_fork->fork, UNLOCK);
+}
+
 void	*lone_philo(void *data)
 {
 	t_philo	*philo;
-	bool	end_sim;
 
 	philo = (t_philo *) data;
-	end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	wait_all_threads(philo->table);
 	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer, get_time(MILLISECOND));
 	increase_long_mtx(&philo->table->table_mtx, &philo->table->threads_running);
 	print_status(philo, TAKEN_FIRST_FORK, DEBUG_MODE);
-	while(!end_sim)
-	{
+	while(!end_sim(philo->table))
 		usleep(200);
-		end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
-	}
 	return (NULL);
 }
 
 void	*dinner_simulation(void *data)
 {
 	t_philo	*philo;
-	bool	end_sim;
 
 	philo = (t_philo *)data;
-	end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	wait_all_threads(philo->table);
 	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer,
 			get_time(MILLISECOND));
 	increase_long_mtx(&philo->table->table_mtx,
 		&philo->table->threads_running);
-	while (!end_sim)
+	while (!end_sim(philo->table))
 	{
 		if(philo->is_full)
 			break ;
@@ -51,7 +66,6 @@ void	*dinner_simulation(void *data)
 		print_status(philo, SLEEPING, DEBUG_MODE);
 		my_usleep(philo->table->time_to_sleep, philo->table);
 		think(philo);
-		end_sim = get_bool_mtx(&philo->table->table_mtx, &philo->table->end_sim);
 	}
 	return (NULL);
 }
