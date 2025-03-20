@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:40:35 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 12:24:16 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:14:16 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ long	get_time(t_time operation)
 	if (gettimeofday(&tv, NULL))
 		exit_error("gettimeofday failed");
 	if (operation == MILLISECOND)
-		return((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+		return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 	else if (operation == MICROSECOND)
-		return((tv.tv_sec * 1e6) + tv.tv_usec);
+		return ((tv.tv_sec * 1e6) + tv.tv_usec);
 	else
 		exit_error("Invalid operation for gettimeofday");
 	return (-1);

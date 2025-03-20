@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:33 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 11:40:17 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:25:03 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ void	check_mutex_error(int status, t_op operation)
 	if (status == EINVAL
 		&& (operation == LOCK || operation == UNLOCK))
 		exit_error("The value specified by mutex is invalid\n");
-	else if(status == EINVAL && operation == INIT)
+	else if (status == EINVAL && operation == INIT)
 		exit_error("The value specified by attr is invalid\n");
-	else if(status == EDEADLK)
+	else if (status == EDEADLK)
 		exit_error("A deadlock would occur if the thread blocked "
 			"waiting for mutex\n");
-	else if(status == EPERM)
+	else if (status == EPERM)
 		exit_error("The current thread does not hold a lock on mutex\n");
-	else if(status == ENOMEM)
+	else if (status == ENOMEM)
 		exit_error("The process cannot allocate enough memory to "
 			"create another mutex");
-	else if(status == EBUSY)
+	else if (status == EBUSY)
 		exit_error("Mutex is locked\n");
 	return ;
 }

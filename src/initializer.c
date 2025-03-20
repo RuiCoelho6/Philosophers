@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:27:26 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 12:27:46 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:14:35 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	init_table(t_table *table)
 	table->forks = malloc(table->philo_nbr * sizeof(t_fork));
 	if (table->forks == NULL)
 		exit_error("Forks malloc failed\n");
-	while(++i < table->philo_nbr)
+	while (++i < table->philo_nbr)
 	{
 		mutex_handler(&table->forks[i].fork, INIT);
 		table->forks[i].fork_id = i;

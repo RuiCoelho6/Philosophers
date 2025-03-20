@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:17:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 11:36:00 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:23:25 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ static void	eat(t_philo *philo)
 	print_status(philo, TAKEN_FIRST_FORK, DEBUG_MODE);
 	mutex_handler(&philo->second_fork->fork, LOCK);
 	print_status(philo, TAKEN_SECOND_FORK, DEBUG_MODE);
-	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer, get_time(MILLISECOND));
+	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer,
+		get_time(MILLISECOND));
 	philo->meal_counter++;
 	print_status(philo, EATING, DEBUG_MODE);
 	my_usleep(philo->table->time_to_eat, philo->table);
-	if(philo->table->limit_of_meals > 0
+	if (philo->table->limit_of_meals > 0
 		&& philo->meal_counter == philo->table->limit_of_meals)
 		set_bool_mtx(&philo->philo_mtx, &philo->is_full, true);
 	mutex_handler(&philo->first_fork->fork, UNLOCK);
@@ -35,10 +36,12 @@ void	*lone_philo(void *data)
 
 	philo = (t_philo *) data;
 	wait_all_threads(philo->table);
-	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer, get_time(MILLISECOND));
-	increase_long_mtx(&philo->table->table_mtx, &philo->table->threads_running);
+	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer,
+		get_time(MILLISECOND));
+	increase_long_mtx(&philo->table->table_mtx,
+		&philo->table->threads_running);
 	print_status(philo, TAKEN_FIRST_FORK, DEBUG_MODE);
-	while(!end_sim(philo->table))
+	while (!end_sim(philo->table))
 		usleep(200);
 	return (NULL);
 }
@@ -50,13 +53,13 @@ void	*dinner_simulation(void *data)
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
 	set_long_mtx(&philo->philo_mtx, &philo->last_meal_timer,
-			get_time(MILLISECOND));
+		get_time(MILLISECOND));
 	increase_long_mtx(&philo->table->table_mtx,
 		&philo->table->threads_running);
-	desynch_philos(philo);
+	desynchronize_thinking(philo);
 	while (!end_sim(philo->table))
 	{
-		if(philo->is_full)
+		if (philo->is_full)
 			break ;
 		eat(philo);
 		print_status(philo, SLEEPING, DEBUG_MODE);
@@ -78,7 +81,7 @@ void	start_simulation(t_table *table)
 			&table->philos[0], CREATE);
 	else
 	{
-		while(++i < table->philo_nbr)
+		while (++i < table->philo_nbr)
 			thread_handler(&table->philos[i].thread_id,
 				dinner_simulation, &table->philos[i], CREATE);
 	}
@@ -86,7 +89,7 @@ void	start_simulation(t_table *table)
 	table->start_sim = get_time(MILLISECOND);
 	set_bool_mtx(&table->table_mtx, &table->all_threads_ready, true);
 	i = -1;
-	while(++i < table->philo_nbr)
+	while (++i < table->philo_nbr)
 		thread_handler(&table->philos[i].thread_id, NULL, NULL, JOIN);
 	set_bool_mtx(&table->table_mtx, &table->end_sim, true);
 	thread_handler(&table->monitor, NULL, NULL, JOIN);
