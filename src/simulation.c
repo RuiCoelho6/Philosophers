@@ -6,16 +6,11 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:17:48 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 13:02:52 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:27:43 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-static void	think(t_philo *philo)
-{
-	print_status(philo, THINKING, DEBUG_MODE);
-}
 
 static void	eat(t_philo *philo)
 {
@@ -58,6 +53,7 @@ void	*dinner_simulation(void *data)
 			get_time(MILLISECOND));
 	increase_long_mtx(&philo->table->table_mtx,
 		&philo->table->threads_running);
+	desynch_philos(philo);
 	while (!end_sim(philo->table))
 	{
 		if(philo->is_full)
@@ -65,7 +61,7 @@ void	*dinner_simulation(void *data)
 		eat(philo);
 		print_status(philo, SLEEPING, DEBUG_MODE);
 		my_usleep(philo->table->time_to_sleep, philo->table);
-		think(philo);
+		think(philo, false);
 	}
 	return (NULL);
 }

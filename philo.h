@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 13:03:19 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:28:33 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,10 @@ long	get_time(t_time operation);
  *   1 microsecond to maintain precision without oversleeping.
  */
 void	my_usleep(long usec, t_table *table);
+
+void	think(t_philo *philo, bool pre);
+
+void	desynch_philos(t_philo *philo);
 
 void	*monitor_dinner(void *data);
 

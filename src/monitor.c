@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 12:36:40 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 13:04:16 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:22:51 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	*monitor_dinner(void *data)
 			{
 				set_bool_mtx(&table->table_mtx, &table->end_sim, true);
 				print_status(table->philos + i, DIED, DEBUG_MODE);
+				break ;
 			}
 		}
 	}
