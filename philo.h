@@ -6,22 +6,23 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 11:28:33 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:12:59 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
+# define PHILO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <limits.h>
-#include <pthread.h>
-#include <errno.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <sys/time.h>
+# include <unistd.h>
+# include <limits.h>
+# include <pthread.h>
+# include <errno.h>
 
-#define DEBUG_MODE 0
+# define DEBUG_MODE 0
 /*
  *  Operations for mutex/threads
 */
@@ -58,10 +59,10 @@ typedef enum e_status
 	DIED,
 }	t_status;
 
-typedef struct s_philo t_philo;
-typedef struct s_fork t_fork;
-typedef struct s_table t_table;
-typedef pthread_mutex_t t_mtx;
+typedef struct s_philo	t_philo;
+typedef struct s_fork	t_fork;
+typedef struct s_table	t_table;
+typedef pthread_mutex_t	t_mtx;
 
 /* 
  *  philo_nbr : number of philosophers
@@ -77,20 +78,20 @@ typedef pthread_mutex_t t_mtx;
  */
 typedef struct s_table
 {
-	long	philo_nbr;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	limit_of_meals;
-	long	start_sim;
-	bool	end_sim;
-	bool	all_threads_ready;
-	long	threads_running;
+	long		philo_nbr;
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
+	long		limit_of_meals;
+	long		start_sim;
+	bool		end_sim;
+	bool		all_threads_ready;
+	long		threads_running;
 	pthread_t	monitor;
-	t_mtx	table_mtx;
-	t_mtx	print_mtx;
-	t_philo	*philos;
-	t_fork	*forks;
+	t_mtx		table_mtx;
+	t_mtx		print_mtx;
+	t_philo		*philos;
+	t_fork		*forks;
 }	t_table;
 
 /* 
@@ -137,13 +138,16 @@ void	exit_error(char *message);
 
 /**
  * check_and_parse: This function extracts numerical values from the arguments
- *                  and assigns them to the corresponding fields in the `t_table` structure.
+ *                  and assigns them to the corresponding fields in the
+ *                  `t_table` structure.
  * 
  * @table: Pointer to the structure storing simulation parameters.
  * @av: Array of arguments.
  * 
- * Converts time values from milliseconds to microseconds for use with `usleep()`.
- * Ensures all provided timestamps are larger than the minimum required threshold (60ms).
+ * Converts time values from milliseconds to microseconds for use with
+ *  `usleep()`.
+ * Ensures all provided timestamps are larger than the minimum required
+ *  threshold (60ms).
  * Sets the meal limit if provided, otherwise, defaults to -1 (unlimited meals).
  */
 void	check_and_parse(t_table *table, char **av);
@@ -160,7 +164,8 @@ void	check_and_parse(t_table *table, char **av);
 void	mutex_handler(t_mtx *mtx, t_op operation);
 
 /**
- * thread_handler: Manages thread operations such as creation, joining, and detaching.
+ * thread_handler: Manages thread operations such as creation, joining,
+ *  and detaching.
  * 
  * @thread: Pointer to the thread being managed.
  * @foo: Function pointer to the thread's entry function.
@@ -173,14 +178,16 @@ void	thread_handler(pthread_t *thread, void *(*foo)(void *),
 			void *data, t_op operation);
 
 /**
- * init_table: Initializes the values of the table strutch and assigns the first forks each philosopher.
+ * init_table: Initializes the values of the table strutch and assigns the first
+ *             forks each philosopher.
  * 
  * @table: Pointer to the structure storing simulation parameters.
  */
 void	init_table(t_table *table);
 
 /**
- * set_[type of data]_mtx: Locks a mutex, alters the value of the specified variable and unlocks the mutex.
+ * set_[type of data]_mtx: Locks a mutex, alters the value of the specified
+ *                         variable and unlocks the mutex.
  * 
  * @mtx: Pointer to the mtx to handle.
  * @var: Variable to alter.
@@ -192,7 +199,8 @@ void	set_long_mtx(t_mtx *mtx, long *var, long value);
 void	increase_long_mtx(t_mtx *mtx, long *value);
 
 /**
- * get_[type of data]_mtx: Locks a mutex, retrieves the value of the specified variable and unlocks the mutex.
+ * get_[type of data]_mtx: Locks a mutex, retrieves the value of the specified
+ *                         variable and unlocks the mutex.
  * 
  * @mtx: Pointer to the mtx to handle.
  * @var: Variable to retrieve.
@@ -205,12 +213,14 @@ bool	end_sim(t_table *table);
 /**
  * get_time: retuns elapsed time in seconds, milliseconds or microseconds.
  * 
- * @operation: The gettime operation to be performed (SECOND, MILLISECOND, MICROSECOND).
+ * @operation: The gettime operation to be performed
+ *             (SECOND, MILLISECOND, MICROSECOND).
  */
 long	get_time(t_time operation);
 
 /**
- * my_usleep: Custom sleep function that prevents a thread from sleeping longer than necessary.
+ * my_usleep: Custom sleep function that prevents a thread from sleeping
+ *            longer than necessary.
  * 
  * @usec: The duration to sleep in microseconds.
  * @table: Pointer to the structure storing simulation parameters.
@@ -218,14 +228,14 @@ long	get_time(t_time operation);
  * This function ensures a thread sleeps for the specified duration while:
  * - Periodically checking if the simulation has ended to avoid unnecessary loops
  * - Using usleep() for efficiency when the remaining sleep time is significant
- * - Switching to active waiting using a spinlock when the remaining time is less than
- *   1 microsecond to maintain precision without oversleeping.
+ * - Switching to active waiting using a spinlock when the remaining time is less
+ *   than 1 microsecond to maintain precision without oversleeping.
  */
 void	my_usleep(long usec, t_table *table);
 
 void	think(t_philo *philo, bool pre);
 
-void	desynch_philos(t_philo *philo);
+void	desynchronize_thinking(t_philo *philo);
 
 void	*monitor_dinner(void *data);
 

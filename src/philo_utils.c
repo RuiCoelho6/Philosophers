@@ -6,17 +6,11 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:18:44 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:21:33 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:36:05 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-void	wait_all_threads(t_table *table)
-{
-	while (!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
-		;
-}
 
 bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr)
 {
@@ -79,8 +73,19 @@ void	print_status(t_philo *philo, t_status op, bool debug)
 	mutex_handler(&philo->table->print_mtx, UNLOCK);
 }
 
+size_t	ft_strlen(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
+
 void	exit_error(char *message)
 {
-	printf("%s\n", message);
+	write(2, message, ft_strlen(message));
+	write(2, "\n", 1);
 	exit(1);
 }

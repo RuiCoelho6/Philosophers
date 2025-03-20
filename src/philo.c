@@ -6,11 +6,17 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:15:06 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/17 11:18:03 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:36:11 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+void	wait_all_threads(t_table *table)
+{
+	while (!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
+		;
+}
 
 void	clean(t_table *table)
 {
@@ -47,6 +53,8 @@ int	main(int ac, char **av)
 	else
 	{
 		check_and_parse(&table, av);
+		if (table.philo_nbr > 200)
+			exit_error("");
 		init_table(&table);
 		start_simulation(&table);
 		clean(&table);
