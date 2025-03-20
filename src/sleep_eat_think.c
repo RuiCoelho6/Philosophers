@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:53:50 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 11:28:18 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:53:58 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	think(t_philo *philo, bool pre)
 	t_think = t_eat * 2 - t_sleep;
 	if(t_think < 0)
 		t_think = 0;
-	my_usleep(t_think * 0.42, philo->table);
+	my_usleep(t_think, philo->table);
 }
 
 void	desynch_philos(t_philo *philo)
