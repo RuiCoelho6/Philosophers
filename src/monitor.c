@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 12:36:40 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:15:39 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:18:09 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*monitor_dinner(void *data)
 	table = (t_table *) data;
 	while (!all_threads_running(&table->table_mtx, &table->threads_running,
 			table->philo_nbr))
-		;
+		usleep(1);
 	while (!end_sim(table))
 	{
 		i = -1;

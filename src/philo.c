@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:15:06 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:36:11 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:19:08 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	wait_all_threads(t_table *table)
 {
 	while (!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
-		;
+		usleep(1);
 }
 
 void	clean(t_table *table)
