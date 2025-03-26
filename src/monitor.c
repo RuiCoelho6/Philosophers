@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 12:36:40 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/25 18:18:09 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:11:28 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	philo_died(t_philo *philo)
 
 	if (get_bool_mtx(&philo->philo_mtx, &philo->is_full))
 		return (false);
-	elapsed = get_time(MILLISECOND) - get_long_mtx(&philo->philo_mtx,
+	elapsed = get_time("millisecond") - get_long_mtx(&philo->philo_mtx,
 			&philo->last_meal_timer);
 	t_die = philo->table->time_to_die / 1000;
 	if (elapsed > t_die)
@@ -45,7 +45,7 @@ void	*monitor_dinner(void *data)
 			if (philo_died(table->philos + i))
 			{
 				set_bool_mtx(&table->table_mtx, &table->end_sim, true);
-				print_status(table->philos + i, DIED, DEBUG_MODE);
+				print_status(table->philos + i, "died", DEBUG_MODE);
 				break ;
 			}
 		}

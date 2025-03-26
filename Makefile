@@ -3,17 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rpires-c <rpires-c@student.42porto.com>    +#+  +:+       +#+         #
+#    By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 13:55:48 by rpires-c          #+#    #+#              #
-#    Updated: 2025/03/07 14:08:56 by rpires-c         ###   ########.fr        #
+#    Updated: 2025/03/26 16:05:39 by rpires-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler flags
 FLGS = -Wall -Wextra -Werror
-VAL = valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes
-
+SAN = -fsanitize=address,undefined
 # Commands
 CC = cc -g
 RM = rm -f
@@ -45,7 +44,7 @@ $(NAME): $(OBJS)
 # Compile all source files
 $(OBJDIR)/%.o: src/%.c
 	@mkdir -p $(OBJDIR)
-	@$(CC) -c $(FLGS) -o $@ $<
+	@ $(CC) -c $(FLGS) -o $@ $<
 
 # Phony targets
 .PHONY: all clean fclean re exec norm normi

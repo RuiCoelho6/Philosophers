@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:40:35 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:14:16 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:17:35 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ bool	get_bool_mtx(t_mtx *mtx, bool *var)
 {
 	bool	ret;
 
-	mutex_handler(mtx, LOCK);
+	mutex_handler(mtx, "lock");
 	ret = *var;
-	mutex_handler(mtx, UNLOCK);
+	mutex_handler(mtx, "unlock");
 	return (ret);
 }
 
@@ -26,9 +26,9 @@ int	get_int_mtx(t_mtx *mtx, int *var)
 {
 	int	ret;
 
-	mutex_handler(mtx, LOCK);
+	mutex_handler(mtx, "lock");
 	ret = *var;
-	mutex_handler(mtx, UNLOCK);
+	mutex_handler(mtx, "unlock");
 	return (ret);
 }
 
@@ -36,21 +36,21 @@ long	get_long_mtx(t_mtx *mtx, long *var)
 {
 	long	ret;
 
-	mutex_handler(mtx, LOCK);
+	mutex_handler(mtx, "lock");
 	ret = *var;
-	mutex_handler(mtx, UNLOCK);
+	mutex_handler(mtx, "unlock");
 	return (ret);
 }
 
-long	get_time(t_time operation)
+long	get_time(char *operation)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
 		exit_error("gettimeofday failed");
-	if (operation == MILLISECOND)
+	if (ft_strcmp(operation, "millisecond") == 0)
 		return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-	else if (operation == MICROSECOND)
+	else if (ft_strcmp(operation, "microsecond") == 0)
 		return ((tv.tv_sec * 1e6) + tv.tv_usec);
 	else
 		exit_error("Invalid operation for gettimeofday");

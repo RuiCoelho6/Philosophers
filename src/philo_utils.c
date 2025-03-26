@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:18:44 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:36:05 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:37:20 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,60 +17,63 @@ bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr)
 	bool	ret;
 
 	ret = false;
-	mutex_handler(mtx, LOCK);
+	mutex_handler(mtx, "lock");
 	if (*threads == philo_nbr)
 		ret = true;
-	mutex_handler(mtx, UNLOCK);
+	mutex_handler(mtx, "unlock");
 	return (ret);
 }
 
-void	write_debug(t_status status, t_philo *philo, long elapsed)
+void	write_debug(char *status, t_philo *philo, long elapsed)
 {
-	if (status == TAKEN_FIRST_FORK && !end_sim(philo->table))
+	if (ft_strcmp(status, "taken_first_fork") == 0
+		&& !end_sim(philo->table))
 		printf("%6ld philo: %d has taken the first fork [%d]\n",
 			elapsed, philo->id,
 			philo->first_fork->fork_id);
-	if (status == TAKEN_SECOND_FORK && !end_sim(philo->table))
+	if (ft_strcmp(status, "taken_second_fork") == 0
+		&& !end_sim(philo->table))
 		printf("%6ld philo: %d has taken the second fork [%d]\n",
 			elapsed, philo->id,
 			philo->second_fork->fork_id);
-	else if (status == EATING && !end_sim(philo->table))
+	else if (ft_strcmp(status, "eating") == 0 && !end_sim(philo->table))
 		printf("%6ld philo: %d is eating | meal counter: %ld\n",
 			elapsed, philo->id,
 			philo->meal_counter);
-	else if (status == SLEEPING && !end_sim(philo->table))
+	else if (ft_strcmp(status, "sleeping") == 0 && !end_sim(philo->table))
 		printf("%6ld philo: %d is sleeping\n", elapsed, philo->id);
-	else if (status == THINKING && !end_sim(philo->table))
+	else if (ft_strcmp(status, "thinking") == 0 && !end_sim(philo->table))
 		printf("%6ld philo: %d is thinking\n", elapsed, philo->id);
-	else if (status == DIED)
+	else if (ft_strcmp(status, "died") == 0)
 		printf("%6ld philo: %d died\n", elapsed, philo->id);
 }
 
-void	print_status(t_philo *philo, t_status op, bool debug)
+void	print_status(t_philo *philo, char *op, bool debug)
 {
 	long	elapsed;
 
-	elapsed = get_time(MILLISECOND) - philo->table->start_sim;
+	elapsed = get_time("millisecond") - philo->table->start_sim;
 	if (philo->is_full)
 		return ;
-	mutex_handler(&philo->table->print_mtx, LOCK);
+	mutex_handler(&philo->table->print_mtx, "lock");
 	if (debug)
 		write_debug(op, philo, elapsed);
 	else
 	{
-		if ((op == TAKEN_FIRST_FORK || op == TAKEN_SECOND_FORK)
+		if ((ft_strcmp(op, "taken_first_fork") == 0
+				|| ft_strcmp(op, "taken_second_fork") == 0)
 			&& !end_sim(philo->table))
 			printf("%-6ld %d has taken a fork\n", elapsed, philo->id);
-		else if (op == EATING && !end_sim(philo->table))
+		else if (ft_strcmp(op, "eating") == 0 && !end_sim(philo->table))
 			printf("%-6ld %d is eating\n", elapsed, philo->id);
-		else if (op == SLEEPING && !end_sim(philo->table))
+		else if (ft_strcmp(op, "sleeping") == 0 && !end_sim(philo->table))
 			printf("%-6ld %d is sleeping\n", elapsed, philo->id);
-		else if (op == THINKING && !end_sim(philo->table))
+		else if (ft_strcmp(op, "thinking") == 0 && !end_sim(philo->table))
 			printf("%-6ld %d is thinking\n", elapsed, philo->id);
-		else if (op == DIED)
+		else if (ft_strcmp(op, "died") == 0)
 			printf("%-6ld %d died\n", elapsed, philo->id);
 	}
-	mutex_handler(&philo->table->print_mtx, UNLOCK);
+	mutex_handler(&philo->table->print_mtx, "unlock");
 }
 
 size_t	ft_strlen(const char *str)

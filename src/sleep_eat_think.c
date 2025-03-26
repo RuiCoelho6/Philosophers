@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:53:50 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:24:11 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:19:07 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	think(t_philo *philo, bool pre)
 	long	t_think;
 
 	if (!pre)
-		print_status(philo, THINKING, DEBUG_MODE);
+		print_status(philo, "thinking", DEBUG_MODE);
 	if (philo->table->philo_nbr % 2 == 0)
 		return ;
 	t_eat = philo->table->time_to_eat;
@@ -47,17 +47,17 @@ void	my_usleep(long usec, t_table *table)
 	long	elapsed_time;
 	long	remaining_time;
 
-	start_sim_time = get_time(MICROSECOND);
-	while (get_time(MICROSECOND) - start_sim_time < usec)
+	start_sim_time = get_time("microsecond");
+	while (get_time("microsecond") - start_sim_time < usec)
 	{
 		if (end_sim(table))
 			break ;
-		elapsed_time = get_time(MICROSECOND) - start_sim_time;
+		elapsed_time = get_time("microsecond") - start_sim_time;
 		remaining_time = usec - elapsed_time;
 		if (remaining_time > 1000)
 			usleep(remaining_time / 2);
 		else
-			while (get_time(MICROSECOND) - start_sim_time < usec)
-				;
+			while (get_time("microsecond") - start_sim_time < usec)
+				usleep(10);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:27:26 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:14:35 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:15:43 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	init_philo_array(t_table *table)
 		philo->is_full = false;
 		philo->meal_counter = 0;
 		philo->table = table;
-		mutex_handler(&philo->philo_mtx, INIT);
+		mutex_handler(&philo->philo_mtx, "init");
 		start_getting_forks(philo, table->forks, i);
 	}
 }
@@ -67,14 +67,14 @@ void	init_table(t_table *table)
 	table->philos = malloc(table->philo_nbr * sizeof(t_philo));
 	if (table->philos == NULL)
 		exit_error("Philos malloc failed\n");
-	mutex_handler(&table->table_mtx, INIT);
-	mutex_handler(&table->print_mtx, INIT);
+	mutex_handler(&table->table_mtx, "init");
+	mutex_handler(&table->print_mtx, "init");
 	table->forks = malloc(table->philo_nbr * sizeof(t_fork));
 	if (table->forks == NULL)
 		exit_error("Forks malloc failed\n");
 	while (++i < table->philo_nbr)
 	{
-		mutex_handler(&table->forks[i].fork, INIT);
+		mutex_handler(&table->forks[i].fork, "init");
 		table->forks[i].fork_id = i;
 	}
 	init_philo_array(table);

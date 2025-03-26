@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:51:38 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:12:59 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:30:10 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,41 +23,6 @@
 # include <errno.h>
 
 # define DEBUG_MODE 0
-/*
- *  Operations for mutex/threads
-*/
-typedef enum e_op
-{
-	LOCK,
-	UNLOCK,
-	INIT,
-	DESTROY,
-	CREATE,
-	JOIN,
-	DETACH,
-}	t_op;
-
-/*
- *  Operations for get_time
-*/
-typedef enum e_time
-{
-	MILLISECOND,
-	MICROSECOND,
-}	t_time;
-
-/*
- *  Operations for writing the status
-*/
-typedef enum e_status
-{
-	EATING,
-	THINKING,
-	SLEEPING,
-	TAKEN_FIRST_FORK,
-	TAKEN_SECOND_FORK,
-	DIED,
-}	t_status;
 
 typedef struct s_philo	t_philo;
 typedef struct s_fork	t_fork;
@@ -161,7 +126,7 @@ void	check_and_parse(t_table *table, char **av);
  * 
  * Checks for errors using check_mutex_error().
  */
-void	mutex_handler(t_mtx *mtx, t_op operation);
+void	mutex_handler(t_mtx *mtx, char *operation);
 
 /**
  * thread_handler: Manages thread operations such as creation, joining,
@@ -175,7 +140,7 @@ void	mutex_handler(t_mtx *mtx, t_op operation);
  * Checks for errors using check_thread_error().
  */
 void	thread_handler(pthread_t *thread, void *(*foo)(void *),
-			void *data, t_op operation);
+			void *data, char *operation);
 
 /**
  * init_table: Initializes the values of the table strutch and assigns the first
@@ -216,7 +181,7 @@ bool	end_sim(t_table *table);
  * @operation: The gettime operation to be performed
  *             (SECOND, MILLISECOND, MICROSECOND).
  */
-long	get_time(t_time operation);
+long	get_time(char *operation);
 
 /**
  * my_usleep: Custom sleep function that prevents a thread from sleeping
@@ -243,8 +208,10 @@ void	wait_all_threads(t_table *table);
 
 bool	all_threads_running(t_mtx *mtx, long *threads, long philo_nbr);
 
-void	print_status(t_philo *philo, t_status op, bool debug);
+void	print_status(t_philo *philo, char *op, bool debug);
 
 void	start_simulation(t_table *table);
+
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

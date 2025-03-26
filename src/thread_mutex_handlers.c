@@ -6,20 +6,21 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:05:33 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:25:03 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:40:11 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	check_mutex_error(int status, t_op operation)
+void	check_mutex_error(int status, char *operation)
 {
 	if (status == 0)
 		return ;
 	if (status == EINVAL
-		&& (operation == LOCK || operation == UNLOCK))
+		&& (ft_strcmp(operation, "lock") == 0
+			|| ft_strcmp(operation, "unlock") == 0))
 		exit_error("The value specified by mutex is invalid\n");
-	else if (status == EINVAL && operation == INIT)
+	else if (status == EINVAL && ft_strcmp(operation, "init") == 0)
 		exit_error("The value specified by attr is invalid\n");
 	else if (status == EDEADLK)
 		exit_error("A deadlock would occur if the thread blocked "
@@ -34,21 +35,21 @@ void	check_mutex_error(int status, t_op operation)
 	return ;
 }
 
-void	mutex_handler(t_mtx *mtx, t_op operation)
+void	mutex_handler(t_mtx *mtx, char *operation)
 {
-	if (operation == LOCK)
+	if (ft_strcmp(operation, "lock") == 0)
 		check_mutex_error(pthread_mutex_lock(mtx), operation);
-	else if (operation == UNLOCK)
+	else if (ft_strcmp(operation, "unlock") == 0)
 		check_mutex_error(pthread_mutex_unlock(mtx), operation);
-	else if (operation == INIT)
+	else if (ft_strcmp(operation, "init") == 0)
 		check_mutex_error(pthread_mutex_init(mtx, NULL), operation);
-	else if (operation == DESTROY)
+	else if (ft_strcmp(operation, "destroy") == 0)
 		check_mutex_error(pthread_mutex_destroy(mtx), operation);
 	else
 		exit_error("Invalid operation for mutex handler\n");
 }
 
-void	check_thread_error(int status, t_op operation)
+void	check_thread_error(int status, char *operation)
 {
 	if (status == 0)
 		return ;
@@ -56,10 +57,11 @@ void	check_thread_error(int status, t_op operation)
 		exit_error("No resources to create another thread\n");
 	else if (status == EPERM)
 		exit_error("The caller does not have appropriate permission\n");
-	else if (status == EINVAL && operation == CREATE)
+	else if (status == EINVAL && ft_strcmp(operation, "create") == 0)
 		exit_error("The value specified by attr in invalid\n");
 	else if (status == EINVAL
-		&& (operation == JOIN || operation == DETACH))
+		&& (ft_strcmp(operation, "join") == 0
+			|| ft_strcmp(operation, "detach") == 0))
 		exit_error("The value specified by thread is not joinable\n");
 	else if (status == ESRCH)
 		exit_error("No thread could be found corresponding to that "
@@ -71,14 +73,14 @@ void	check_thread_error(int status, t_op operation)
 }
 
 void	thread_handler(pthread_t *thread, void *(*foo)(void *),
-	void *data, t_op operation)
+	void *data, char *operation)
 {
-	if (operation == CREATE)
+	if (ft_strcmp(operation, "create") == 0)
 		check_thread_error(pthread_create(thread, NULL, foo, data),
 			operation);
-	else if (operation == JOIN)
+	else if (ft_strcmp(operation, "join") == 0)
 		check_thread_error(pthread_join(*thread, NULL), operation);
-	else if (operation == DETACH)
+	else if (ft_strcmp(operation, "detach") == 0)
 		check_thread_error(pthread_detach(*thread), operation);
 	else
 		exit_error("Invalid operation for thread handler\n");

@@ -6,16 +6,26 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:15:06 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/25 18:19:08 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:49:46 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
+
 void	wait_all_threads(t_table *table)
 {
 	while (!get_bool_mtx(&table->table_mtx, &table->all_threads_ready))
-		usleep(1);
+		usleep(10);
 }
 
 void	clean(t_table *table)
@@ -27,10 +37,10 @@ void	clean(t_table *table)
 	while (++i < table->philo_nbr)
 	{
 		philo = table->philos + i;
-		mutex_handler(&philo->philo_mtx, DESTROY);
+		mutex_handler(&philo->philo_mtx, "destroy");
 	}
-	mutex_handler(&table->print_mtx, DESTROY);
-	mutex_handler(&table->table_mtx, DESTROY);
+	mutex_handler(&table->print_mtx, "destroy");
+	mutex_handler(&table->table_mtx, "destroy");
 	free(table->forks);
 	free(table->philos);
 }
@@ -54,7 +64,7 @@ int	main(int ac, char **av)
 	{
 		check_and_parse(&table, av);
 		if (table.philo_nbr > 200)
-			exit_error("");
+			exit_error("Max number of philosophers is 200\n");
 		init_table(&table);
 		start_simulation(&table);
 		clean(&table);
