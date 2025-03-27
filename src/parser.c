@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:21:05 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/27 11:43:39 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/27 11:48:35 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ long	ft_atol(char *str)
 			exit_error("Number bigger than INT_MAX\n");
 		str++;
 	}
-	if (!is_digit(*str) && *str == '\0')
+	if (!is_digit(*str) && *str != '\0')
 		exit_error("Invalid input format\n");
 	return (result);
 }
