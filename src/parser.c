@@ -6,7 +6,7 @@
 /*   By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:21:05 by rpires-c          #+#    #+#             */
-/*   Updated: 2025/03/20 13:19:01 by rpires-c         ###   ########.fr       */
+/*   Updated: 2025/03/27 11:43:39 by rpires-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ long	validate_and_get_sign(char **str)
 			sign = 1;
 		(*str)++;
 	}
-	if (!is_digit(**str))
-		exit_error("Only numbers are allowed\n");
 	if (sign == -1)
 		exit_error("Negative numbers are not allowed\n");
 	return (sign);
@@ -60,6 +58,8 @@ long	ft_atol(char *str)
 			exit_error("Number bigger than INT_MAX\n");
 		str++;
 	}
+	if (!is_digit(*str) && *str == '\0')
+		exit_error("Invalid input format\n");
 	return (result);
 }
 

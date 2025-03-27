@@ -6,13 +6,14 @@
 #    By: rpires-c <rpires-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 13:55:48 by rpires-c          #+#    #+#              #
-#    Updated: 2025/03/26 16:05:39 by rpires-c         ###   ########.fr        #
+#    Updated: 2025/03/27 11:44:55 by rpires-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler flags
 FLGS = -Wall -Wextra -Werror
 SAN = -fsanitize=address,undefined
+
 # Commands
 CC = cc -g
 RM = rm -f
